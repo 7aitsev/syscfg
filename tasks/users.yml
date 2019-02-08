@@ -1,0 +1,7 @@
+- name: Create ansible user
+  user:
+    name: ansible
+    uid: 900
+    group: wheel
+    shell: /sbin/nologin
+    create_home: false
