@@ -1,5 +1,8 @@
 - hosts: localhost
   become: true
   tasks:
-  - name: Install cowsay
-    pacman: name=cowsay
+  - name: Install packages
+    pacman: name={{items}}
+    with_items:
+      - cowsay
+      - htop
