@@ -5,3 +5,11 @@
     group: wheel
     shell: /sbin/nologin
     create_home: false
+
+- name: Copy sudoers_ansible
+  copy:
+    src: files/sudoers_ansible
+    dest: /etc/sudoers.d/ansible
+    owner: root
+    group: root
+    mode: 0440
