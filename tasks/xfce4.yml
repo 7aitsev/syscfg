@@ -1,0 +1,9 @@
+- name: Set GTK theme
+  become_user: max
+  xfconf:
+    channel: "xsettings"
+    property: "/Net/ThemeName"
+    value_type: "string"
+    value: "Adapta-Nokto-Eta"
+  environment:
+    DBUS_SESSION_BUS_ADDRESS: unix:path=/run/user/1000/bus
