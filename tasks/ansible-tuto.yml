@@ -1,0 +1,34 @@
+---
+- name: "Install VirtualBox"
+  pacman:
+    name: ['virtualbox', 'virtualbox-host-modules-arch']
+
+- name: "Create vboxusers group"
+  group:
+    name: "vboxusers"
+    system: "yes"
+
+- name: "Add the max user to the vboxusers group"
+  user:
+    name: "max"
+    groups: "vboxusers"
+    append: "yes"
+    create_home: "no"
+
+- name: "Install Vagrant"
+  pacman:
+    name: vagrant
+
+- name: "Do not load the VirtualBox kernel modules at boot"
+  file:
+    state: "link"
+    src: "/dev/null"
+    path: "/etc/modules-load.d/virtualbox-host-modules-arch.conf"
+
+- name: "Load the VirtualBox kernel modules (no vboxpci)"
+  modprobe:
+    name: "{{item}}"
+  with_items:
+    - vboxdrv
+    - vboxnetflt
+    - vboxnetflt
