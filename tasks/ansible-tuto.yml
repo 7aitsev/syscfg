@@ -31,4 +31,4 @@
   with_items:
     - vboxdrv
     - vboxnetflt
-    - vboxnetflt
+    - vboxnetadp
