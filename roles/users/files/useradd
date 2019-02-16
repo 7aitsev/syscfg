@@ -1,0 +1,11 @@
+# useradd defaults file for ArchLinux
+# original changes by TomK
+GROUP=users
+HOME=/home
+INACTIVE=2
+EXPIRE=
+SHELL=/bin/bash
+SKEL=/etc/skel
+CREATE_MAIL_SPOOL=no
+UID_MIN=1000
+GID_MIN=1000
