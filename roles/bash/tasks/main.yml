@@ -1,0 +1,44 @@
+---
+# tasks file for bash
+- name: "Copy global configuration files"
+  copy:
+    src: etc/{{ item }}
+    dest: /etc/
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - bash.bashrc
+    - profile
+
+- name: "Copy user default configuration files"
+  copy:
+    src: etc/skel/{{ item }}
+    dest: /etc/skel/
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+      - .bash_logout
+      - .bash_profile
+      - .bashrc
+      - .profile
+
+- name: "Copy configuration files for max"
+  copy:
+    src: max/{{ item }}
+    dest: /home/max/
+    owner: max
+    group: max
+    mode: 0600
+  with_items:
+      - .bash_profile
+      - .profile
+
+- name: "Finishing touch: placing .bashrc template for max"
+  template:
+    src: max/.bashrc.j2
+    dest: /home/max/.bashrc
+    owner: max
+    group: max
+    mode: 0600

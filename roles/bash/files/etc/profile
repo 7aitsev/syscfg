@@ -1,0 +1,80 @@
+
+#export LESSOPEN="|lesspipe.sh %s"
+
+echo /etc/profile
+
+# Set our umask
+umask 022
+
+# Functions to help us manage paths. Second argument is the name of the
+# path variable to be modified (default: PATH)
+pathremove () {
+  local IFS=':'
+  local NEWPATH
+  local DIR
+  local PATHVARIABLE=${2:-PATH}
+  for DIR in ${!PATHVARIABLE} ; do
+          if [ "$DIR" != "$1" ] ; then
+            NEWPATH=${NEWPATH:+$NEWPATH:}$DIR
+          fi
+  done
+  export $PATHVARIABLE="$NEWPATH"
+}
+
+pathprepend () {
+  pathremove "$1" "$2"
+  local PATHVARIABLE=${2:-PATH}
+  export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
+}
+
+pathappend () {
+        pathremove "$1" "$2"
+        local PATHVARIABLE=${2:-PATH}
+        export $PATHVARIABLE="${!PATHVARIABLE:+${!PATHVARIABLE}:}$1"
+}
+
+export -f pathremove pathprepend pathappend
+
+# Append our default paths
+appendpath () {
+  case ":$PATH:" in
+    *:"$1":*)
+      ;;
+    *)
+      PATH="${PATH:+$PATH:}$1"
+  esac
+}
+
+pathappend '/usr/local/sbin'
+pathappend '/usr/local/bin'
+pathappend '/usr/bin'
+
+export PATH
+
+# Setup some environment variables.
+export HISTSIZE=1000
+export HISTIGNORE='&:[bf]g:exit:reset:clear'
+# Stop logging of repeated identical commands
+export HISTCONTROL=ignoredups
+
+# Load profiles from /etc/profile.d
+if test -d /etc/profile.d/; then
+  for profile in /etc/profile.d/*.sh; do
+    test -r "$profile" && . "$profile"
+  done
+  unset profile
+fi
+
+# Source global bash config
+if test "$PS1" && test "$BASH" && test -z ${POSIXLY_CORRECT+x} \
+   && test -r /etc/bash.bashrc; then
+  . /etc/bash.bashrc
+fi
+
+# Termcap is outdated, old, and crusty, kill it.
+unset TERMCAP
+
+# Man is much better than us at figuring this out
+unset MANPATH
+
+export EDITOR=vim
