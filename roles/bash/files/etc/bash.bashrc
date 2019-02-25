@@ -14,13 +14,16 @@ alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 alias diff='diff --color=auto'
 export LESS='-R -M'
-export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
-export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
-export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
-export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
-export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
-export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+man() {
+  export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
+  export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
+  export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+  export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
+  export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+  export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+  export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+  command man "$@"
+}
 # Set up LS_OPTIONS environment variable.
 # This contains extra command line options to use with ls.
 # The default ones are:
@@ -95,7 +98,7 @@ exitstatus()
 {
   if [[ $1 != 0 ]]; then
     tput sc
-    printf "%*s\e[1;31m%s\e[0m" $(($COLUMNS-${#1}-2)) "" "[$1]"
+    printf "%*s\e[1;31m%s\e[0m" $((COLUMNS-${#1}-2)) "" "[$1]"
     tput rc
   fi
 }
@@ -136,7 +139,7 @@ alias duh='du -h --summarize'
 alias dfh='df -h'
 alias freeh='free -h'
 alias ll='ls -lh'
-alias la='ls -lah'
+alias la='ls -lAh'
 alias lsd="ls -lAF | grep /$"
 alias ping4='ping -c4'
 alias dmesq='dmesg --color=always | less'
