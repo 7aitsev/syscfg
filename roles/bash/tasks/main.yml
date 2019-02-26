@@ -1,5 +1,4 @@
 ---
-# tasks file for bash
 - name: "Copy global configuration files"
   copy:
     src: etc/{{ item }}
@@ -11,7 +10,7 @@
     - bash.bashrc
     - profile
 
-- name: "Copy user default configuration files"
+- name: "Copy user default bash configuration files"
   copy:
     src: etc/skel/{{ item }}
     dest: /etc/skel/
@@ -24,7 +23,7 @@
       - .bashrc
       - .profile
 
-- name: "Copy configuration files for max"
+- name: "Copy bash configuration files for max"
   copy:
     src: max/{{ item }}
     dest: /home/max/
@@ -42,3 +41,16 @@
     owner: max
     group: max
     mode: 0600
+
+- name: "Copy bash configuration files for root"
+  copy:
+    src: root/{{ item }}
+    dest: /root/
+    owner: root
+    group: root
+    mode: 0600
+  with_items:
+    - .bash_profile
+    - .bashrc
+    - .profile
+...

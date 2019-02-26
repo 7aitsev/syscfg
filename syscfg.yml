@@ -1,4 +1,12 @@
 ---
 - hosts: localhost
+  connection: local
+  gather_facts: no
+  become: true
+  become_user: root
   roles:
-    - users
+    - role: bash
+      tags: [ 'bash', 'dotfiles' ]
+    - role: users
+      tags: [ 'users' ]
+...
