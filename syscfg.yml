@@ -9,4 +9,6 @@
       tags: [ 'bash', 'dotfiles' ]
     - role: users
       tags: [ 'users' ]
+    - role: pacman
+      tags: [ 'pacman' ]
 ...

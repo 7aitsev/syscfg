@@ -1,0 +1,10 @@
+---
+- name: Copy pacman configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /etc/
+    owner: root
+    group: root
+    mode: 0644
+  with_items: [ 'pacman.conf', 'makepkg.conf' ]
+...

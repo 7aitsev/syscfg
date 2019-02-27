@@ -54,4 +54,5 @@
     - .bash_profile
     - .bashrc
     - .profile
+  tags: pacman
 ...
