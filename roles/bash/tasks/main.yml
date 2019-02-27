@@ -9,6 +9,7 @@
   with_items:
     - bash.bashrc
     - profile
+    - inputrc
 
 - name: "Copy user default bash configuration files"
   copy:
