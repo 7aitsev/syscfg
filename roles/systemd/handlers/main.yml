@@ -1,0 +1,12 @@
+---
+- name: restart resolved
+  systemd:
+    name: systemd-resolved.service
+    state: restarted
+  when: resolved_service is not changed
+
+- name: restart sysctl
+  systemd:
+    name: systemd-sysctl.service
+    state: restarted
+...

@@ -11,4 +11,5 @@
       tags: [ 'users' ]
     - role: pacman
       tags: [ 'pacman' ]
+    - role: systemd
 ...

@@ -1,0 +1,9 @@
+---
+- name: Include sysctl play
+  import_tasks: sysctl.yml
+  tags: sysctl
+
+- name: Include resolved play
+  import_tasks: resolved.yml
+  tags: resolved
+...
