@@ -1,6 +1,3 @@
-
-#export LESSOPEN="|lesspipe.sh %s"
-
 echo /etc/profile
 
 # Set our umask

@@ -36,18 +36,9 @@ export LS_OPTIONS='--color=auto -F -b -T 0'
 # from 1992 or so...  possibly they should be disabled, but maybe
 # someone out there is actually using them?  :-)
 # Assume shell aliases are supported.
-if [ "$SHELL" = '/bin/zsh' ] ; then
-  # By default, zsh doesn't split parameters into separate words
-  # when it encounters whitespace.  The '=' flag will fix this.
-  # see zshexpn(1) man-page regarding SH_WORD_SPLIT.
-  alias ls='/bin/ls ${=LS_OPTIONS}'
-  alias dir='/bin/ls ${=LS_OPTIONS} --format=vertical'
-  alias vdir='/bin/ls ${=LS_OPTIONS} --format=long'
-else
-  alias ls='/bin/ls $LS_OPTIONS'
-  alias dir='/bin/ls $LS_OPTIONS --format=vertical'
-  alias vdir='/bin/ls $LS_OPTIONS --format=long'
-fi
+alias ls='/bin/ls $LS_OPTIONS'
+alias dir='/bin/ls $LS_OPTIONS --format=vertical'
+alias vdir='/bin/ls $LS_OPTIONS --format=long'
 alias d='dir'
 alias v='vdir'
 
@@ -75,6 +66,10 @@ shopt -s histappend
 # Prepend cd when entering just a path in the shell
 shopt -s autocd
 
+# Save all lines of a multiple-line command in the same history entry
+# (allows easy re-editing of multi-line commands)
+shopt -s cmdhist
+
 # Disconnect from a shell when pressing Ctrl+D 10 times
 set -o ignoreeof
 
@@ -91,24 +86,52 @@ case "$TERM" in
 esac
 
 # Setup a red prompt for root and a green one for users.
-NORMAL="\[\e[0m\]"
-RED="\[\e[1;31m\]"
-GREEN="\[\e[1;32m\]"
-exitstatus()
-{
-  if [[ $1 != 0 ]]; then
+RST="\[\e[m\]"
+R="\[\e[1;31m\]"
+G="\[\e[1;32m\]"
+
+if [ -f /usr/share/git/completion/git-prompt.sh ]; then
+  source /usr/share/git/completion/git-prompt.sh
+  GIT_PS1_SHOWDIRTYSTATE=1
+  GIT_PS1_SHOWSTASHSTATE=1
+  GIT_PS1_SHOWUNTRACKEDFILES=1
+  GIT_PS1_SHOWUPSTREAM='auto name'
+fi
+
+__right_prompt() {
+  local pec pgs
+  [ 0 != "$1" ] && pec=1
+  [ -d .git ] && pgs=1
+
+  if [ 1 = "$pec" ] && [ 1 != "$pgs" ]; then
     tput sc
-    printf "%*s\e[1;31m%s\e[0m" $((COLUMNS-${#1}-2)) "" "[$1]"
+    printf '%*s%b[%s]%b' $((COLUMNS-${#1}-2)) '' '\e[1;31m' "$1" '\e[m'
+    tput rc
+  elif [ 1 = "$pgs" ]; then
+    local git_status
+    git_status="$(__git_ps1 '%s')"
+    tput sc
+    if [ 1 != "$pec" ]; then
+      printf -- '%*s%b%s%b' $((COLUMNS-${#git_status})) '' \
+          '\e[34m' "$git_status" '\e[m'
+    else
+      printf -- '%*s%b%s%b %b%s%b' $((COLUMNS-${#git_status}-${#1}-3)) '' \
+          '\e[34m' "$git_status" '\e[m' '\e[1;31m' "[$1]" '\e[m'
+    fi
     tput rc
   fi
 }
-if [[ $EUID == 0 ]] ; then
-  PS1+="\[\$(exitstatus \$?)\]$RED\u [ $NORMAL\w$RED ]# $NORMAL"
-else
-  PS1+="\[\$(exitstatus \$?)\]$GREEN\u [ $NORMAL\w$GREEN ]\$ $NORMAL"
-fi
-unset script RED GREEN NORMAL
 
+PROMPT_DIRTRIM=3
+if [[ $EUID == 0 ]] ; then
+  PS1+="\[\$(__right_prompt \$?)\]$R\u [ $RST\w$R ]# $RST\n"
+else
+  PS1+="\[\$(__right_prompt \$?)\]$G\u [ $RST\w$G ]\$ $RST\n"
+fi
+
+unset script R G RST
+
+# Use the colors listed below for linux terminal
 if [ "$TERM" = "linux" ]; then
   echo -en "\e]P033303b"
   echo -en "\e]P187404f"
@@ -130,7 +153,7 @@ if [ "$TERM" = "linux" ]; then
 fi
 
 [ -r /usr/share/bash-completion/bash_completion ] \
-  && . /usr/share/bash-completion/bash_completion
+  && source /usr/share/bash-completion/bash_completion
 
 # To pass aliases
 alias sudo='sudo '
@@ -143,6 +166,7 @@ alias la='ls -lAh'
 alias lsd="ls -lAF | grep /$"
 alias ping4='ping -c4'
 alias dmesq='dmesg --color=always | less'
+alias tm='tmux attach || tmux new'
 
 extract () {
   if [ -f "$1" ] ; then

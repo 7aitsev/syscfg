@@ -1,5 +1,5 @@
 ---
-- name: "Copy global configuration files"
+- name: Copy global configuration files
   copy:
     src: etc/{{ item }}
     dest: /etc/
@@ -11,7 +11,7 @@
     - profile
     - inputrc
 
-- name: "Copy user default bash configuration files"
+- name: Copy user default bash configuration files
   copy:
     src: etc/skel/{{ item }}
     dest: /etc/skel/
@@ -24,7 +24,7 @@
       - .bashrc
       - .profile
 
-- name: "Copy bash configuration files for max"
+- name: Copy bash configuration files for max
   copy:
     src: max/{{ item }}
     dest: /home/max/
@@ -35,7 +35,7 @@
       - .bash_profile
       - .profile
 
-- name: "Finishing touch: placing .bashrc template for max"
+- name: Placing .bashrc template for max
   template:
     src: max/.bashrc.j2
     dest: /home/max/.bashrc
@@ -43,7 +43,7 @@
     group: max
     mode: 0600
 
-- name: "Copy bash configuration files for root"
+- name: Copy bash configuration files for root
   copy:
     src: root/{{ item }}
     dest: /root/
@@ -55,4 +55,15 @@
     - .bashrc
     - .profile
   tags: pacman
+
+- name: Install some related packages
+  pacman:
+    name:
+      - lesspipe
+      - git
+      - youtube-dl
+      - openssh
+      - tmux
+      - gvim
+    state: present
 ...
