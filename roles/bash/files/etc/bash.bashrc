@@ -76,10 +76,10 @@ set -o ignoreeof
 # Change the window title of X terminals
 case "$TERM" in
   xterm*|rxvt*|Eterm|aterm|kterm|gnome*)
-    PS1='\[\033]0;\u[$?]\h:\w\007\]'
+    PS1='\[\033]0;\u@\h:\w\007\]'
     ;;
   screen*)
-    PS1='\[\033]0;\u[$?]\h:\w\007\]'
+    PS1='\[\033]0;\u@\h:\w\007\]'
     ;;
   *)
     PS1=''
@@ -98,35 +98,21 @@ if [ -f /usr/share/git/completion/git-prompt.sh ]; then
   GIT_PS1_SHOWUPSTREAM='auto name'
 fi
 
-__right_prompt() {
-  local pec pgs
-  [ 0 != "$1" ] && pec=1
-  [ -d .git ] && pgs=1
+__gs() {
+  printf -- '\e[1;34m%s\e[m' "$(__git_ps1 " %s")"
+}
 
-  if [ 1 = "$pec" ] && [ 1 != "$pgs" ]; then
-    tput sc
-    printf '%*s%b[%s]%b' $((COLUMNS-${#1}-2)) '' '\e[1;31m' "$1" '\e[m'
-    tput rc
-  elif [ 1 = "$pgs" ]; then
-    local git_status
-    git_status="$(__git_ps1 '%s')"
-    tput sc
-    if [ 1 != "$pec" ]; then
-      printf -- '%*s%b%s%b' $((COLUMNS-${#git_status})) '' \
-          '\e[34m' "$git_status" '\e[m'
-    else
-      printf -- '%*s%b%s%b %b%s%b' $((COLUMNS-${#git_status}-${#1}-3)) '' \
-          '\e[34m' "$git_status" '\e[m' '\e[1;31m' "[$1]" '\e[m'
-    fi
-    tput rc
+__ec() {
+  if [ 0 != "$1" ]; then
+    printf '\e[1;33m%s\e[m ' "$1"
   fi
 }
 
 PROMPT_DIRTRIM=3
 if [[ $EUID == 0 ]] ; then
-  PS1+="\[\$(__right_prompt \$?)\]$R\u [ $RST\w$R ]# $RST\n"
+  PS1+="\[\$(__ec \$?)\]$R\u [ $RST\w\[\$(__gs)\]$R ]# $RST"
 else
-  PS1+="\[\$(__right_prompt \$?)\]$G\u [ $RST\w$G ]\$ $RST\n"
+  PS1+="\[\$(__ec \$?)\]$G\u [ $RST\w\[\$(__gs)\]$G ]\$ $RST"
 fi
 
 unset script R G RST
