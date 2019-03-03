@@ -1,0 +1,12 @@
+---
+- name: Install git
+  pacman: name=git state=present
+
+- name: Copy the configuration file
+  copy:
+    src: gitconfig
+    dest: /home/max/.config/git/config
+    owner: max
+    group: max
+    mode: 0600
+...

@@ -12,4 +12,6 @@
     - role: pacman
       tags: [ 'pacman' ]
     - role: systemd
+    - role: git
+      tags: [ 'git', 'dotfiles' ]
 ...
