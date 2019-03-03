@@ -1,0 +1,15 @@
+---
+- name: Install tmux
+  pacman: name=tmux state=present
+
+- name: Ensure tmux folder exists
+  file: path=/home/max/.config/tmux state=directory
+
+- name: Copy the configuration file
+  copy:
+    src: tmux.conf
+    dest: /home/max/.config/tmux/tmux.conf
+    owner: max
+    group: max
+    mode: 0600
+...

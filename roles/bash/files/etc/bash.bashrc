@@ -89,6 +89,8 @@ esac
 RST="\[\e[m\]"
 R="\[\e[1;31m\]"
 G="\[\e[1;32m\]"
+B="\[\e[1;34m\]"
+Y="\[\e[1;33m\]"
 
 if [ -f /usr/share/git/completion/git-prompt.sh ]; then
   source /usr/share/git/completion/git-prompt.sh
@@ -99,23 +101,23 @@ if [ -f /usr/share/git/completion/git-prompt.sh ]; then
 fi
 
 __gs() {
-  printf -- '\e[1;34m%s\e[m' "$(__git_ps1 " %s")"
+  printf -- ' %s' "$(__git_ps1 "%s")"
 }
 
 __ec() {
   if [ 0 != "$1" ]; then
-    printf '\e[1;33m%s\e[m ' "$1"
+    printf '%s ' "$1"
   fi
 }
 
 PROMPT_DIRTRIM=3
 if [[ $EUID == 0 ]] ; then
-  PS1+="\[\$(__ec \$?)\]$R\u [ $RST\w\[\$(__gs)\]$R ]# $RST"
+  PS1+="$Y\$(__ec \$?)$R\u [ $RST\w$B\$(__gs)$R ]# $RST"
 else
-  PS1+="\[\$(__ec \$?)\]$G\u [ $RST\w\[\$(__gs)\]$G ]\$ $RST"
+  PS1+="$Y\$(__ec \$?)$G\u [ $RST\w$B\$(__gs)$G ]\$ $RST"
 fi
 
-unset script R G RST
+unset script R G B Y RST
 
 # Use the colors listed below for linux terminal
 if [ "$TERM" = "linux" ]; then
@@ -152,7 +154,10 @@ alias la='ls -lAh'
 alias lsd="ls -lAF | grep /$"
 alias ping4='ping -c4'
 alias dmesq='dmesg --color=always | less'
+# Configure tmux
+alias tmux='TERM=xterm-256color tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
 alias tm='tmux attach || tmux new'
+export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 
 extract () {
   if [ -f "$1" ] ; then

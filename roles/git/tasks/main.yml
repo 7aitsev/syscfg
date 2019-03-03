@@ -2,6 +2,9 @@
 - name: Install git
   pacman: name=git state=present
 
+- name: Ensure git folder exists
+  file: path=/home/max/.config/git state=directory
+
 - name: Copy the configuration file
   copy:
     src: gitconfig
