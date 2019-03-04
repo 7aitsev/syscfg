@@ -1,0 +1,38 @@
+" All system-wide defaults are set in $VIMRUNTIME/archlinux.vim (usually just
+" /usr/share/vim/vimfiles/archlinux.vim) and sourced by the call to :runtime
+" you can find below.  If you wish to change any of those settings, you should
+" do it in this file (/etc/vimrc), since archlinux.vim will be overwritten
+" everytime an upgrade of the vim packages is performed.  It is recommended to
+" make changes after sourcing archlinux.vim since it alters the value of the
+" 'compatible' option.
+
+" This line should not be removed as it ensures that various options are
+" properly set to work with the Vim-related packages.
+runtime! archlinux.vim
+
+" Forget about vi and set it first as it modifies future behaviour
+set nocompatible
+
+" Environment
+" A consistent XDG Base Directory compliant runtime environment
+set swapfile
+set directory=$XDG_CACHE_HOME/vim/swap//
+set backup
+set backupskip=/tmp/*,/run/*,/var/*,/media/*
+set updatecount=100
+set undofile
+set undodir=$XDG_CACHE_HOME/vim/undo//
+set backupdir=$XDG_CACHE_HOME/vim/backup//
+set viminfo='100,r/tmp,r/media,r/var,r/run,n$XDG_CACHE_HOME/vim/viminfo
+set runtimepath=$XDG_CONFIG_HOME/vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after
+set runtimepath+=$XDG_CONFIG_HOME/.vim/after
+set spellfile="$XDG_CONFIG_HOME/vim/spell/en.utf-8.add"
+
+" Use Space as mapleader
+let mapleader =" "
+
+" Restore the last editing position
+autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   execute "normal! g`\"" |
+    \ endif

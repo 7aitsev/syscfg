@@ -1,0 +1,59 @@
+" Setup Vim-plug
+  call plug#begin('~/.config/vim/plugged')
+    Plug 'junegunn/goyo.vim'
+    "Plug 'scrooloose/syntastic'
+    Plug 'itchyny/lightline.vim'
+    Plug 'w0rp/ale'
+    Plug 'tomasr/molokai'
+  call plug#end()
+
+" Goyo plugin makes text more readable when writing prose
+  map <leader>f :Goyo<CR>
+ 
+" Use molokai color scheme if possible
+  let s:ena_molokai=1
+  if s:ena_molokai && &term =~ '256color'
+    colorscheme molokai
+    let g:molokai_original=0
+    set background=dark
+    if exists('+termguicolors')
+      let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+      let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+      set termguicolors
+    else
+      let g:rehash256=1
+    endif
+    set cursorline
+  endif
+  unlet s:ena_molokai
+
+" LightLine
+  let s:ena_lightline=1
+  if s:ena_lightline
+    set noshowmode
+    if &term =~ '256color'
+      let g:lightline={
+        \ 'colorscheme':'molokai'
+        \ }
+    else
+      let g:lightline={
+        \ 'colorscheme':'16color'
+        \ }
+    endif
+  endif
+  unlet s:ena_lightline
+
+" Recommended settings for Syntastic plugin
+"  set statusline+=%#warningmsg#
+"  set statusline+=%{SyntasticStatuslineFlag()}
+"  set statusline+=%*
+"  let g:syntastic_always_populate_loc_list = 1
+"  let g:syntastic_loc_list_height = 3
+"  let g:syntastic_auto_loc_list = 0
+"  let g:syntastic_check_on_open = 1
+"  let g:syntastic_check_on_wq = 0
+" Save and run syntax checking
+"  map <leader>s :w <bar> SyntasticCheck<CR>
+"if !exists('g:override_spf13_bundles')
+"  set statusline+=%{fugitive#statusline()} " Git Hotness
+"endif

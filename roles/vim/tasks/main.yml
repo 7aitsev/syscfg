@@ -1,0 +1,32 @@
+---
+- name: gvim should be present
+  pacman: name=gvim state=present
+
+- name: Place global vimrc
+  copy:
+    src: etc_vimrc
+    dest: /etc/vimrc
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure vim folders are exist
+  file:
+    path:
+      - /home/max/.config/vim
+      - /home/max/.cache/vim/backup
+      - /home/max/.cache/vim/swap
+      - /home/max/.cache/vim/undo
+    state: directory
+    owner: max
+    group: max
+    mode: 0700
+
+- name: Place user vimrc
+  copy:
+    src: vimrc
+    dest: /home/max/.config/vim/vimrc
+    owner: max
+    group: max
+    mode: 0600
+...

@@ -101,7 +101,7 @@ if [ -f /usr/share/git/completion/git-prompt.sh ]; then
 fi
 
 __gs() {
-  printf -- ' %s' "$(__git_ps1 "%s")"
+  printf -- '%s' "$(__git_ps1 " %s")"
 }
 
 __ec() {
@@ -158,6 +158,7 @@ alias dmesq='dmesg --color=always | less'
 alias tmux='TERM=xterm-256color tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
 alias tm='tmux attach || tmux new'
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
+export VIMINIT=":source $XDG_CONFIG_HOME"/vim/vimrc
 
 extract () {
   if [ -f "$1" ] ; then
