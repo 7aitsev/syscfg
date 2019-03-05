@@ -12,15 +12,16 @@
 
 - name: Ensure vim folders are exist
   file:
-    path:
-      - /home/max/.config/vim
-      - /home/max/.cache/vim/backup
-      - /home/max/.cache/vim/swap
-      - /home/max/.cache/vim/undo
+    path: "{{item}}"
     state: directory
     owner: max
     group: max
     mode: 0700
+  with_items:
+    - /home/max/.config/vim
+    - /home/max/.cache/vim/backup
+    - /home/max/.cache/vim/swap
+    - /home/max/.cache/vim/undo
 
 - name: Place user vimrc
   copy:

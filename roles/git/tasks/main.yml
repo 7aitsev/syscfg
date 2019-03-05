@@ -3,7 +3,12 @@
   pacman: name=git state=present
 
 - name: Ensure git folder exists
-  file: path=/home/max/.config/git state=directory
+  file:
+    path: /home/max/.config/git
+    state: directory
+    owner: max
+    group: max
+    mode: 0700
 
 - name: Copy the configuration file
   copy:

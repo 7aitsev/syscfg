@@ -3,7 +3,12 @@
   pacman: name=tmux state=present
 
 - name: Ensure tmux folder exists
-  file: path=/home/max/.config/tmux state=directory
+  file:
+    path: /home/max/.config/tmux
+    state: directory
+    owner: max
+    group: max
+    mode: 0700
 
 - name: Copy the configuration file
   copy:
