@@ -16,4 +16,6 @@
       tags: [ 'git', 'dotfiles' ]
     - role: tmux
       tags: [ 'tmux', 'dotfiles' ]
+    - role: vim
+      tags: [ 'vim', 'dotfiles' ]
 ...

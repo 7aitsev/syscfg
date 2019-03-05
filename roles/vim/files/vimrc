@@ -5,6 +5,8 @@
     Plug 'itchyny/lightline.vim'
     Plug 'w0rp/ale'
     Plug 'tomasr/molokai'
+    "Plug 'tpope/vim-commentary'
+    "Plug 'scrooloose/nerdtree'
   call plug#end()
 
 " Goyo plugin makes text more readable when writing prose

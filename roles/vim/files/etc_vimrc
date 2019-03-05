@@ -2,7 +2,7 @@
 " /usr/share/vim/vimfiles/archlinux.vim) and sourced by the call to :runtime
 " you can find below.  If you wish to change any of those settings, you should
 " do it in this file (/etc/vimrc), since archlinux.vim will be overwritten
-" everytime an upgrade of the vim packages is performed.  It is recommended to
+" every time an upgrade of the vim packages is performed. It is recommended to
 " make changes after sourcing archlinux.vim since it alters the value of the
 " 'compatible' option.
 
@@ -12,8 +12,21 @@ runtime! archlinux.vim
 
 " Forget about vi and set it first as it modifies future behaviour
 set nocompatible
+" Use Space as mapleader
+let mapleader =" "
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Encoding
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim stores all data (including the exchange buffer) in UTF-8
+set encoding=utf-8
+" Terminal encoding
+set termencoding=utf-8
+set fileencoding=utf-8
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Environment
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " A consistent XDG Base Directory compliant runtime environment
 set swapfile
 set directory=$XDG_CACHE_HOME/vim/swap//
@@ -24,15 +37,128 @@ set undofile
 set undodir=$XDG_CACHE_HOME/vim/undo//
 set backupdir=$XDG_CACHE_HOME/vim/backup//
 set viminfo='100,r/tmp,r/media,r/var,r/run,n$XDG_CACHE_HOME/vim/viminfo
-set runtimepath=$XDG_CONFIG_HOME/vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after
-set runtimepath+=$XDG_CONFIG_HOME/.vim/after
+set runtimepath=$XDG_CONFIG_HOME/vim,$VIM/vimfiles,$VIMRUNTIME
+set runtimepath+=$VIM/vimfiles/after,$XDG_CONFIG_HOME/.vim/after
 set spellfile="$XDG_CONFIG_HOME/vim/spell/en.utf-8.add"
+set autochdir " cd int the dir that the file is in (not sure about this)
 
-" Use Space as mapleader
-let mapleader =" "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Syntax and indentation
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use filetype detection and file-based automatic indenting.
+filetype plugin indent on
+syntax on
+set synmaxcol=120          " Only highlight the first N columns.
+set autoindent             " Indent according to previous line.
+set copyindent             " Use existing indents for new indents
+set preserveindent         " Should help to not mix tabs and spaces
+set expandtab              " Use spaces instead of tabs.
+set softtabstop=2          " Tab key indents by N spaces.
+set shiftwidth=2           " >> indents by N spaces.
+set shiftround             " >> indents to next multiple of 'shiftwidth'.
+set tabstop=8              " \t has width of N
+" Use actual tab chars in Makefiles.
+autocmd FileType make set tabstop=8 shiftwidth=8 softtabstop=0 noexpandtab
+"Syntax highlighting in Markdown
+au BufNewFile,BufReadPost *.md set filetype=markdown
+let g:markdown_fenced_languages= ['bash=sh', 'json=javascript', 'python']
+let g:markdown_fenced_languages+= ['xml', 'html', 'java', 'ini']
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Autocompletion, spell checking and whitespace visualization
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set complete=.,w,b,u,t,i  " the default keyword completion settings
+set completeopt=menu,menuone,preview
+set wildmenu
+set wildmode=longest,list,full
+" Disables automatic commenting on newline:
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+" Spell-check set to <leader>o, 'o' for 'orthography':
+map <leader>o :setlocal spell! spelllang=en_us<cr>
+" 'Real clear' on Space+L
+nnoremap <leader>l :nohlsearch<cr>:diffupdate<cr>
+    \ :syntax sync fromstart<cr><c-l>
+" Toggle search highlighting
+nnoremap <leader>/ :setlocal hlsearch!<cr>
+" Show non-printable characters.
+set list
+if has('multi_byte') && &encoding ==# 'utf-8'
+  let &listchars = 'tab:··,trail:▸,nbsp:◦'
+else
+  let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.,trail:~'
+endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Text width
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set textwidth=0         " turn off line breaking
+set colorcolumn=80,120  " but show gray 'borders'
+highlight ColorColumn ctermbg=darkgray
+" Toggle line wrapping
+map <leader>w :setlocal wrap!<cr>
+set linebreak              " Do not break line at the last char
+set breakat+=-=            " On which chars break a line
+set display=lastline       " Show as much as possible of the last line.
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Line number and status bar
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set number relativenumber  " Show relative numbers.
+set laststatus=2           " Always show statusline.
+set showmode               " Show mode
+set showcmd                " Show already typed keys when more are expected.
+set ruler
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Navigation
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set splitbelow             " Open new windows below the current window.
+set splitright             " Open new windows right of the current window.
+set incsearch              " Highlight while searching with / or ?.
+set ignorecase             " Required for smartcase
+set smartcase              " This is better than just ignoring case.
+set hlsearch               " Keep matches highlighted.
+set wrapscan               " Searches wrap around end-of-file.
+set report=0               " Always report changed lines (after %s/foo/bar/g).
 " Restore the last editing position
 autocmd BufReadPost *
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   execute "normal! g`\"" |
     \ endif
+set backspace=indent,eol,start  " Make backspace work as you would expect.
+" Easier buffer switching
+map <C-j> :bprev<cr>
+map <C-k> :bnext<cr>
+set hidden              " Switch between buffers without having to save first.
+set foldmethod=manual   " Enable manual folding
+set scrolloff=0         " Sometimes it's useful to set 2-5
+set nostartofline       " Leave the cursor on its position when Ctrl+D/U
+" Resizing with <F5><F6><F7><F8>
+map <F5> <c-W>>
+map <F6> <c-W>+
+map <F7> <c-W>-
+map <F8> <c-W><
+" Easier window switching
+map <c-j> <c-W>j
+map <c-k> <c-W>k
+map <c-h> <c-W>h
+map <c-l> <c-W>l
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Misc
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set ttyfast             " Faster redrawing.
+set lazyredraw          " Only redraw when necessary.
+set mouse=a
+
+" Copy selected text to system clipboard (requires gvim/nvim/vim-x11):
+vnoremap <C-c> "+y
+map <C-p> "+P
+" https://vim.fandom.com/wiki/Toggle_auto-indenting_for_code_paste
+set pastetoggle=<F2>
+" This rocks! Improve vimdiff
+if has("patch-8.1.0360")
+    set diffopt=internal,filler,algorithm:patience,indent-heuristic
+endif
+" Set scripts to be executable from the shell
+au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x "<afile>" | endif
