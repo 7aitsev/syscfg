@@ -72,9 +72,12 @@ set completeopt=menu,menuone,preview
 set wildmenu
 set wildmode=longest,list,full
 " Disables automatic commenting on newline:
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r
+  \ formatoptions-=o formatoptions+=j
 " Spell-check set to <leader>o, 'o' for 'orthography':
 map <leader>o :setlocal spell! spelllang=en_us<cr>
+" Limit the count of suggestions and set an algorithm
+set spellsuggest=best,5
 " 'Real clear' on Space+L
 nnoremap <leader>l :nohlsearch<cr>:diffupdate<cr>
     \ :syntax sync fromstart<cr><c-l>
