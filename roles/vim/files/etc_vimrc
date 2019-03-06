@@ -62,7 +62,7 @@ autocmd FileType make set tabstop=8 shiftwidth=8 softtabstop=0 noexpandtab
 "Syntax highlighting in Markdown
 au BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_fenced_languages= ['bash=sh', 'json=javascript', 'python']
-let g:markdown_fenced_languages+= ['xml', 'html', 'java', 'ini']
+let g:markdown_fenced_languages+= ['xml', 'html', 'java', 'dosini']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Autocompletion, spell checking and whitespace visualization
@@ -161,4 +161,7 @@ if has("patch-8.1.0360")
     set diffopt=internal,filler,algorithm:patience,indent-heuristic
 endif
 " Set scripts to be executable from the shell
-au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x "<afile>" | endif
+autocmd BufWritePost *
+  \ if getline(1) =~ "^#!" && match(getfperm(expand("<afile>")), 'x') < 0 |
+  \   silent !chmod +x "<afile>" |
+  \ endif
