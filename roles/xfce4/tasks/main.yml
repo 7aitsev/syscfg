@@ -1,0 +1,31 @@
+---
+- name: Set GTK theme
+  xfconf:
+    channel: "xsettings"
+    property: "/Net/ThemeName"
+    value_type: "string"
+    value: "Adapta-Nokto-Eta"
+
+- name: Remove Hibernation button
+  xfconf:
+    channel: "xfce4-session"
+    property: "/shutdown/ShowHibernate"
+    value_type: "bool"
+    value: "false"
+
+- name: Place winclock script
+  become_user: root
+  copy:
+    src: winclock
+    dest: /usr/local/bin/winclock
+    user: root
+    group: root
+    mode: 0755
+
+- name: Bind Super+C to show a clock
+  xfconf:
+    channel: "xfce4-keyboard-shortcuts"
+    property: "/commands/custom/<Super>c"
+    value_type: "string"
+    value: "/usr/local/bin/winclock"
+...
