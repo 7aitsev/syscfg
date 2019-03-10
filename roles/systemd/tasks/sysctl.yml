@@ -4,7 +4,7 @@
     src: sysctl.d/99-sysctl.conf
     dest: /etc/sysctl.d/
     mode: 0644
-    user: root
+    owner: root
     group: root
   notify: restart sysctl
 ...

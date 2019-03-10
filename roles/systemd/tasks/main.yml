@@ -6,4 +6,8 @@
 - name: Include resolved play
   import_tasks: resolved.yml
   tags: resolved
+
+- name: Include journald play
+  import_tasks: journald.yml
+  tags: journald
 ...

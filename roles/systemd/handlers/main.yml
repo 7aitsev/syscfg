@@ -9,4 +9,9 @@
   systemd:
     name: systemd-sysctl.service
     state: restarted
+
+- name: restart journald
+  systemd:
+    name: systemd-journald.service
+    state: restarted
 ...
