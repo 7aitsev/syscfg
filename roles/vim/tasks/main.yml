@@ -18,12 +18,25 @@
     group: max
     mode: 0700
   with_items:
-    - /home/max/.config/vim
-    - /home/max/.cache/vim/backup
-    - /home/max/.cache/vim/swap
-    - /home/max/.cache/vim/undo
+    - "{{ xdg_config_home['max'] }}/vim"
+    - "{{ xdg_cache_home['max'] }}/vim/backup"
+    - "{{ xdg_cache_home['max'] }}/vim/swap"
+    - "{{ xdg_cache_home['max'] }}/vim/undo"
 
-- name: Place user vimrc
+- name: Ensure vim folders are exist
+  file:
+    path: "{{item}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  with_items:
+    - "{{ xdg_config_home['root'] }}/vim"
+    - "{{ xdg_cache_home['root'] }}/vim/backup"
+    - "{{ xdg_cache_home['root'] }}/vim/swap"
+    - "{{ xdg_cache_home['root'] }}/vim/undo"
+
+- name: Place user vimrc for max
   copy:
     src: vimrc
     dest: /home/max/.config/vim/vimrc

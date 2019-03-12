@@ -4,7 +4,7 @@
 
 - name: Ensure tmux folder exists
   file:
-    path: /home/max/.config/tmux
+    path: "{{ xdg_config_home['max'] }}/tmux"
     state: directory
     owner: max
     group: max
@@ -13,7 +13,7 @@
 - name: Copy the configuration file
   copy:
     src: tmux.conf
-    dest: /home/max/.config/tmux/tmux.conf
+    dest: "{{ xdg_config_home['max'] }}/tmux/tmux.conf"
     owner: max
     group: max
     mode: 0600

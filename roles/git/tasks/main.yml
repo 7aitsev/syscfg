@@ -4,7 +4,7 @@
 
 - name: Ensure git folder exists
   file:
-    path: /home/max/.config/git
+    path: "{{ xdg_config_home['max'] }}/git"
     state: directory
     owner: max
     group: max
@@ -13,7 +13,7 @@
 - name: Copy the configuration file
   copy:
     src: gitconfig
-    dest: /home/max/.config/git/config
+    dest: "{{ xdg_config_home['max'] }}/git/config"
     owner: max
     group: max
     mode: 0600

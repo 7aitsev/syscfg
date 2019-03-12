@@ -4,6 +4,13 @@
   gather_facts: no
   become: true
   become_user: root
+  vars:
+    xdg_cache_home:
+      max: /home/max/.cache
+      root: /root/.cache
+    xdg_config_home:
+      max: /home/max/.config
+      root: /root/.config
   roles:
     - role: bash
       tags: [ 'bash', 'dotfiles' ]
