@@ -27,5 +27,7 @@
       tags: [ 'vim', 'dotfiles' ]
     - role: xfce4
       tags: [ 'xfce4' ]
+    - role: xorg
+      tags: [ 'xorg' ]
       become_user: max
 ...

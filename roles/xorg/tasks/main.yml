@@ -1,0 +1,13 @@
+---
+- name: Place Xorg configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /etc/X11/xorg.conf.d/
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 00-keyboard.conf
+    - 20-intel.conf
+    - 30-touchpad.conf
+...
