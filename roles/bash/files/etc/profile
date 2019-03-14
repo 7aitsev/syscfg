@@ -62,6 +62,9 @@ if test -d /etc/profile.d/; then
   unset profile
 fi
 
+export XDG_CONFIG_HOME="$HOME"/.config
+export XDG_CACHE_HOME="$HOME"/.cache
+
 # Source global bash config
 if test "$PS1" && test "$BASH" && test -z ${POSIXLY_CORRECT+x} \
    && test -r /etc/bash.bashrc; then
@@ -75,6 +78,3 @@ unset TERMCAP
 unset MANPATH
 
 export EDITOR=vim
-
-export XDG_CONFIG_HOME="$HOME"/.config
-export XDG_CACHE_HOME="$HOME"/.cache
