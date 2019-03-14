@@ -4,43 +4,46 @@
 
 - name: Place global vimrc
   copy:
-    src: etc_vimrc
+    src: etc/vimrc
     dest: /etc/vimrc
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
 
-- name: Ensure vim folders are exist
+- name: Ensure vim folders for max are exist
   file:
     path: "{{item}}"
     state: directory
     owner: max
     group: max
-    mode: 0700
+    mode: "0700"
   with_items:
     - "{{ xdg_config_home['max'] }}/vim"
     - "{{ xdg_cache_home['max'] }}/vim/backup"
     - "{{ xdg_cache_home['max'] }}/vim/swap"
     - "{{ xdg_cache_home['max'] }}/vim/undo"
 
-- name: Ensure vim folders are exist
+- name: Ensure vim folders for root are exist
   file:
     path: "{{item}}"
     state: directory
     owner: root
     group: root
-    mode: 0700
+    mode: "0700"
   with_items:
     - "{{ xdg_config_home['root'] }}/vim"
     - "{{ xdg_cache_home['root'] }}/vim/backup"
     - "{{ xdg_cache_home['root'] }}/vim/swap"
     - "{{ xdg_cache_home['root'] }}/vim/undo"
 
-- name: Place user vimrc for max
+- name: Place user vimrc for max and root
   copy:
-    src: vimrc
-    dest: /home/max/.config/vim/vimrc
-    owner: max
-    group: max
-    mode: 0600
+    src: "{{ item.src }}/vimrc"
+    dest: "{{ item.dest }}/.config/vim/vimrc"
+    owner: "{{ item.user }}"
+    group: "{{ item.user }}"
+    mode: "0600"
+  with_items:
+    - { src : 'max', dest : '/home/max', user : 'max' }
+    - { src : 'root', dest : '/root/', user : 'root' }
 ...
