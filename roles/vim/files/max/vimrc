@@ -5,8 +5,8 @@
     Plug 'itchyny/lightline.vim'
     Plug 'w0rp/ale'
     Plug 'tomasr/molokai'
-    "Plug 'tpope/vim-commentary'
-    "Plug 'scrooloose/nerdtree'
+    Plug 'tpope/vim-commentary'
+    Plug 'scrooloose/nerdtree'
   call plug#end()
 
 " Goyo plugin makes text more readable when writing prose
@@ -44,6 +44,8 @@
     endif
   endif
   unlet s:ena_lightline
+
+map <leader>d :NERDTreeToggle<CR>
 
 " Recommended settings for Syntastic plugin
 "  set statusline+=%#warningmsg#
