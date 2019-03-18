@@ -168,3 +168,5 @@ autocmd BufWritePost *
   \ if getline(1) =~ "^#!" && match(getfperm(expand("<afile>")), 'x') < 0 |
   \   silent !chmod +x "<afile>" |
   \ endif
+" Replace all is aliased to S.
+nnoremap S :%s//g<Left><Left>
