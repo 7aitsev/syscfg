@@ -20,9 +20,9 @@
     copy:
       src: winclock
       dest: /usr/local/bin/winclock
-      user: root
+      owner: root
       group: root
-      mode: 0755
+      mode: "0755"
 
   - name: Bind Super+C to show a clock
     xfconf:
