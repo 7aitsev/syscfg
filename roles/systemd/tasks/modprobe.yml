@@ -1,0 +1,11 @@
+---
+- name: Place kernel modules configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /etc/modprobe.d/
+    mode: "0644"
+    owner: root
+    group: root
+  with_fileglob:
+    - "modprobe.d/*.conf"
+...

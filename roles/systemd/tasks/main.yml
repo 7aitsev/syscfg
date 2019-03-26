@@ -10,4 +10,8 @@
 - name: Include journald play
   import_tasks: journald.yml
   tags: journald
+
+- name: Include modprobe play
+  import_tasks: modprobe.yml
+  tags: modprobe
 ...
