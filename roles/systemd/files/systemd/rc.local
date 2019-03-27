@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# Put any local startup commands in here.
+
+setkeycodes e03e 255
+
+exit 0

@@ -14,4 +14,8 @@
 - name: Include modprobe play
   import_tasks: modprobe.yml
   tags: modprobe
+
+- name: Configure rc.local compatibility service
+  import_tasks: rc-local.yml
+  tags: rc-local
 ...

@@ -1,0 +1,19 @@
+---
+- name: Place shell script and unit file
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0744"
+    owner: root
+    group: root
+  with_items:
+    - { src : 'systemd/rc.local', dest : '/etc/rc.local', mode : '0744' }
+    - { src : 'systemd/rc-local.service',
+        dest : '/etc/systemd/system/rc-local.service', mode : '0644' }
+
+- name: Ensure the service is enabled
+  systemd:
+    name: rc-local.service
+    enabled: yes
+    daemon_reload: yes
+...
