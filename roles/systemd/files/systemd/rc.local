@@ -3,5 +3,7 @@
 # Put any local startup commands in here.
 
 setkeycodes e03e 255
+setkeycodes e060 255
+setkeycodes 5b 255
 
 exit 0
