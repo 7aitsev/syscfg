@@ -1,0 +1,22 @@
+---
+- name: "Make sure wpa_supplicant is not running and disabled"
+  systemd:
+    name: wpa_supplicant.service
+    enabled: no
+    state: stopped
+  listen: "fresh setup"
+
+- name: "Enable iwd and start"
+  systemd:
+    name: iwd.service
+    enabled: yes
+    state: started
+  listen: "fresh setup"
+
+- name: "Enable NetworkManager"
+  systemd:
+    name: NetworkManager.service
+    enabled: yes
+    state: started
+  listen: "fresh setup"
+...

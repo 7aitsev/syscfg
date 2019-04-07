@@ -29,4 +29,6 @@
       tags: [ 'xfce4' ]
     - role: xorg
       tags: [ 'xorg' ]
+    - role: networkmanager
+      tags: [ 'network' ]
 ...

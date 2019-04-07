@@ -1,0 +1,21 @@
+---
+- name: "Install NetworkManager and a plug-in for OpenVPN"
+  pacman:
+    name:
+      - 'networkmanager'
+      - 'networkmanager-openvpn'
+      - 'network-manager-applet'
+      - 'nm-connection-editor'
+      - 'iwd'
+  notify: "fresh setup"
+
+- name: "Place configs"
+  copy:
+    src: "{{ item }}"
+    dest: /etc/NetworkManager/conf.d/
+    owner: root
+    group: root
+    mode: "0644"
+  with_fileglob:
+    - "*.conf"
+...
